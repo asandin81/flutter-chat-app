@@ -89,7 +89,9 @@ class AuthService with ChangeNotifier {
 
   Future<bool> isLoggedIn() async {
     final token = await this._storage.read(key: 'token');
+    print('Token recuperado: $token');
 
+    //Aqui esta el problema al renovar el token sin
     final url = Uri.parse('${Environment.apiUrl}/login/renew');
 
     print(url);
@@ -100,6 +102,7 @@ class AuthService with ChangeNotifier {
       final loginResponse = loginResponseFromJson(resp.body);
       this.usuario = loginResponse.usuario;
       await this._guardarToken(loginResponse.token);
+      print('Nuevo token guardado: ${loginResponse.token}');
       return true;
     } else {
       this.logout();
